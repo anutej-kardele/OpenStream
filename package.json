@@ -1,6 +1,6 @@
 {
   "name": "openstream",
-  "homepage": "https://anutej.us/OpenStream",
+  "homepage": "https://anutej.us/OpenStream/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "lucide-react": "^1.39.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.3",

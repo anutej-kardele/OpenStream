@@ -1,0 +1,52 @@
+{
+    "currentUser": {
+        "id": 1,
+        "name": "Anutej",
+        "handle": "anutej",
+        "following": 42,
+        "followers": 128
+    },
+    "users": [
+        {
+            "id": 2,
+            "name": "Maya Rodriguez",
+            "handle": "maya",
+            "followers": 128,
+            "isFollowing": false
+        },
+        {
+            "id": 3,
+            "name": "Dev Patel",
+            "handle": "dev",
+            "followers": 94,
+            "isFollowing": true
+        },
+        {
+            "id": 4,
+            "name": "Sara Kim",
+            "handle": "sara",
+            "followers": 41,
+            "isFollowing": false
+        }
+    ],
+    "posts": [
+        {
+            "id": 101,
+            "authorId": 2,
+            "content": "Finally got the JPA feed query down to one round trip. Small victories.",
+            "createdAt": "2026-09-01T14:00:00Z"
+        },
+        {
+            "id": 102,
+            "authorId": 3,
+            "content": "Cold starts on free tier build character.",
+            "createdAt": "2026-09-01T11:00:00Z"
+        },
+        {
+            "id": 103,
+            "authorId": 1,
+            "content": "Spring Boot talking to Neon. Phase 2 done.",
+            "createdAt": "2026-08-31T09:00:00Z"
+        }
+    ]
+}
