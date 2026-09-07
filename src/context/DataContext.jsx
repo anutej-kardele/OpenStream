@@ -1,42 +1,45 @@
-import { createContext, useContext, useState } from 'react'
-import seed from '../data/dummyData.json'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { useAuth } from './AuthContext'
+import { getFeed, createPost } from '../api'
 
 const DataContext = createContext(null)
 
 export function DataProvider({ children }) {
-    const [posts, setPosts] = useState(seed.posts)
-    const [followingIds, setFollowingIds] = useState(
-        seed.users.filter((u) => u.isFollowing).map((u) => u.id)
-    )
+    const { user } = useAuth()
 
-    const currentUser = seed.currentUser
-    const users = seed.users
+    const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
 
-    const authorFor = (id) =>
-        id === currentUser.id ? currentUser : users.find((u) => u.id === id)
+    const refresh = async () => {
+        if (!user) {
+            setPosts([])
+            return
+        }
 
-    const addPost = (content) => {
-        if (!content.trim()) return
-        setPosts((prev) => [
-            {
-                id: Date.now(),
-                authorId: currentUser.id,
-                content: content.trim(),
-                createdAt: new Date().toISOString(),
-            },
-            ...prev,
-        ])
+        try {
+            setLoading(true)
+            setError(null)
+            const data = await getFeed(user.id)
+            setPosts(data)
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
     }
 
-    const toggleFollow = (id) =>
-        setFollowingIds((ids) =>
-            ids.includes(id) ? ids.filter((i) => i !== id) : [...ids, id]
-        )
+    useEffect(() => {
+        refresh()
+    }, [user])
+
+    const addPost = async (content) => {
+        const created = await createPost(user.id, content)
+        setPosts((prev) => [created, ...prev])
+    }
 
     return (
-        <DataContext.Provider
-            value={{ currentUser, users, posts, followingIds, authorFor, addPost, toggleFollow }}
-        >
+        <DataContext.Provider value={{ posts, loading, error, addPost, refresh }}>
             {children}
         </DataContext.Provider>
     )

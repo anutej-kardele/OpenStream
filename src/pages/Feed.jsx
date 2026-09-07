@@ -5,11 +5,21 @@ import { useData } from '../context/DataContext'
 
 export default function Feed() {
     const [draft, setDraft] = useState('')
-    const { posts, authorFor, addPost } = useData()
+    const [posting, setPosting] = useState(false)
+    const [postError, setPostError] = useState('')
+    const { posts, loading, error, addPost } = useData()
 
-    const handlePost = () => {
-        addPost(draft)
-        setDraft('')
+    const handlePost = async () => {
+        setPostError('')
+        setPosting(true)
+        try {
+            await addPost(draft)
+            setDraft('')
+        } catch (err) {
+            setPostError(err.message)
+        } finally {
+            setPosting(false)
+        }
     }
 
     return (
@@ -31,18 +41,26 @@ export default function Feed() {
                         <span className="text-xs text-zinc-600">{draft.length} / 280</span>
                         <button
                             onClick={handlePost}
-                            disabled={!draft.trim()}
+                            disabled={!draft.trim() || posting}
                             className="text-sm px-4 py-1 rounded-full bg-blue-500 text-white disabled:opacity-40"
                         >
                             Post
                         </button>
                     </div>
+
+                    {postError && <p className="text-xs text-red-400 mt-1">{postError}</p>}
                 </div>
             </div>
 
+            {loading && <p className="text-sm text-zinc-500 px-4 py-6">Loading feed…</p>}
+            {error && <p className="text-sm text-red-400 px-4 py-6">{error}</p>}
+            {!loading && !error && posts.length === 0 && (
+                <p className="text-sm text-zinc-500 px-4 py-6">No posts yet.</p>
+            )}
+
             <div className="flex-1 overflow-y-auto">
                 {posts.map((p) => (
-                    <PostCard key={p.id} author={authorFor(p.authorId)} content={p.content} timeAgo="now" />
+                    <PostCard key={p.id} post={p} />
                 ))}
             </div>
 

@@ -4,17 +4,28 @@ import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
     const [handle, setHandle] = useState('')
-    const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [submitting, setSubmitting] = useState(false)
     const { login } = useAuth()
     const navigate = useNavigate()
 
-    const submit = () => {
-        if (!login(handle, password)) {
-            setError('Enter a handle and password')
+    const submit = async () => {
+        if (!handle.trim()) {
+            setError('Enter a handle')
             return
         }
-        navigate('/feed', { replace: true })
+
+        setError('')
+        setSubmitting(true)
+
+        try {
+            await login(handle.trim())
+            navigate('/feed', { replace: true })
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setSubmitting(false)
+        }
     }
 
     return (
@@ -28,32 +39,24 @@ export default function Login() {
             <input
                 value={handle}
                 onChange={(e) => { setHandle(e.target.value); setError('') }}
+                onKeyDown={(e) => e.key === 'Enter' && submit()}
                 placeholder="anutej"
                 className="w-full mt-1 mb-4 px-3 py-2 rounded-lg bg-zinc-900 text-white
                    placeholder:text-zinc-600 outline-none border border-zinc-800"
-            />
-
-            <label className="text-xs text-zinc-500">Password</label>
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => { setPassword(e.target.value); setError('') }}
-                onKeyDown={(e) => e.key === 'Enter' && submit()}
-                className="w-full mt-1 mb-4 px-3 py-2 rounded-lg bg-zinc-900 text-white
-                   outline-none border border-zinc-800"
             />
 
             {error && <p className="text-xs text-red-400 mb-3">{error}</p>}
 
             <button
                 onClick={submit}
-                className="w-full py-2.5 rounded-lg bg-blue-500 text-white font-medium"
+                disabled={submitting}
+                className="w-full py-2.5 rounded-lg bg-blue-500 text-white font-medium disabled:opacity-40"
             >
-                Sign in
+                {submitting ? 'Signing in…' : 'Sign in'}
             </button>
 
             <p className="text-xs text-zinc-500 text-center mt-4">
-                No account? <span className="text-blue-500">Create one</span>
+                No password yet — sign in with any existing handle.
             </p>
         </div>
     )

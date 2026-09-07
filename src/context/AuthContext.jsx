@@ -1,20 +1,22 @@
 import { createContext, useContext, useState } from 'react'
+import { getUserByHandle } from '../api'
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-    const [isAuthed, setIsAuthed] = useState(false)
 
-    const login = (handle, password) => {
-        if (!handle.trim() || !password.trim()) return false
-        setIsAuthed(true)
-        return true
+    const [user, setUser] = useState(null)
+
+    const login = async (handle) => {
+        const found = await getUserByHandle(handle)
+        setUser(found)
+        return found
     }
 
-    const logout = () => setIsAuthed(false)
+    const logout = () => setUser(null)
 
     return (
-        <AuthContext.Provider value={{ isAuthed, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
