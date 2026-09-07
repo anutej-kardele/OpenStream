@@ -1,23 +1,14 @@
 import { useState } from 'react'
-import data from '../data/dummyData.json'
 import PostCard from '../components/PostCard'
 import BottomNav from '../components/BottomNav'
+import { useData } from '../context/DataContext'
 
 export default function Feed() {
     const [draft, setDraft] = useState('')
-    const [posts, setPosts] = useState(data.posts)
-
-    const authorFor = (id) =>
-        id === data.currentUser.id
-            ? data.currentUser
-            : data.users.find((u) => u.id === id)
+    const { posts, authorFor, addPost } = useData()
 
     const handlePost = () => {
-        if (!draft.trim()) return
-        setPosts([
-            { id: Date.now(), authorId: data.currentUser.id, content: draft, createdAt: new Date().toISOString() },
-            ...posts,
-        ])
+        addPost(draft)
         setDraft('')
     }
 

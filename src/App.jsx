@@ -1,19 +1,27 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import { DataProvider } from './context/DataContext'
+import RequireAuth from './components/RequireAuth'
 import PhoneShell from './components/PhoneShell'
+import Login from './pages/Login'
 import Feed from './pages/Feed'
-
-const Stub = ({ name }) => <div className="p-4">{name} — coming next</div>
+import SearchPage from './pages/Search'
+import Profile from './pages/Profile'
 
 export default function App() {
   return (
-    <PhoneShell>
-      <Routes>
-        <Route path="/" element={<Navigate to="/feed" replace />} />
-        <Route path="/feed" element={<Feed />} />
-        <Route path="/search" element={<Stub name="Search" />} />
-        <Route path="/profile" element={<Stub name="Profile" />} />
-        <Route path="/login" element={<Stub name="Login" />} />
-      </Routes>
-    </PhoneShell>
+    <AuthProvider>
+      <DataProvider>
+        <PhoneShell>
+          <Routes>
+            <Route path="/" element={<Navigate to="/feed" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/feed" element={<RequireAuth><Feed /></RequireAuth>} />
+            <Route path="/search" element={<RequireAuth><SearchPage /></RequireAuth>} />
+            <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+          </Routes>
+        </PhoneShell>
+      </DataProvider>
+    </AuthProvider>
   )
 }
