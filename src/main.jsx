@@ -6,7 +6,7 @@ import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/OpenStream">
+    <BrowserRouter basename="/">
       <App />
     </BrowserRouter>
   </StrictMode>
