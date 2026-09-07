@@ -7,8 +7,16 @@ import Login from './pages/Login'
 import Feed from './pages/Feed'
 import SearchPage from './pages/Search'
 import Profile from './pages/Profile'
+import { useEffect } from 'react'
 
 export default function App() {
+
+  // Preload the backend server to avoid high loading time on first request
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/health`).catch(() => { })
+  }, [])
+
+
   return (
     <AuthProvider>
       <DataProvider>
