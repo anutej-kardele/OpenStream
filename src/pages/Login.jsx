@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { Webhook } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export default function Login() {
     const [handle, setHandle] = useState('')
@@ -58,7 +59,7 @@ export default function Login() {
             </button>
 
             <p className="text-xs text-zinc-500 text-center mt-4">
-                No password yet — sign in with any existing handle.
+                No account? <Link to="/signup" className="text-blue-500">Create one</Link>
             </p>
 
             <button

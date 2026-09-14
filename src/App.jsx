@@ -8,6 +8,8 @@ import Feed from './pages/Feed'
 import SearchPage from './pages/Search'
 import Profile from './pages/Profile'
 import { useEffect } from 'react'
+import Signup from './pages/Signup'
+import FollowList from './pages/FollowList'
 
 export default function App() {
 
@@ -27,6 +29,9 @@ export default function App() {
             <Route path="/feed" element={<RequireAuth><Feed /></RequireAuth>} />
             <Route path="/search" element={<RequireAuth><SearchPage /></RequireAuth>} />
             <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/profile/following" element={<RequireAuth><FollowList mode="following" /></RequireAuth>} />
+            <Route path="/profile/followers" element={<RequireAuth><FollowList mode="followers" /></RequireAuth>} />
           </Routes>
         </PhoneShell>
       </DataProvider>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useData } from '../context/DataContext'
 import { getFollowCounts } from '../api'
@@ -26,7 +27,7 @@ export default function Profile() {
         return () => {
             cancelled = true
         }
-    }, [user.id])
+    }, [user.id, posts])
 
     const myPosts = posts.filter((p) => p.authorHandle === user.handle)
 
@@ -48,12 +49,12 @@ export default function Profile() {
                 </div>
 
                 <div className="flex gap-5 text-sm">
-                    <span className="text-white">
+                    <Link to="/profile/following" className="text-white">
                         {counts.following} <span className="text-zinc-500">following</span>
-                    </span>
-                    <span className="text-white">
+                    </Link>
+                    <Link to="/profile/followers" className="text-white">
                         {counts.followers} <span className="text-zinc-500">followers</span>
-                    </span>
+                    </Link>
                 </div>
 
                 {error && <p className="text-xs text-red-400 mt-2">{error}</p>}

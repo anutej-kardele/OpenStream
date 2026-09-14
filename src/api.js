@@ -43,3 +43,5 @@ export const getFollowers = (userId) => request(`/api/users/${userId}/followers`
 export const getFollowCounts = (userId) => request(`/api/users/${userId}/follow-counts`)
 
 export const searchUsers = (q) => request(`/api/users/search?q=${encodeURIComponent(q)}`)
+
+export const getSuggestions = (userId) => request(`/api/users/suggestions?userId=${userId}`)
