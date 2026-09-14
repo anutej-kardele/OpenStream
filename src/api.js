@@ -45,3 +45,4 @@ export const getFollowCounts = (userId) => request(`/api/users/${userId}/follow-
 export const searchUsers = (q) => request(`/api/users/search?q=${encodeURIComponent(q)}`)
 
 export const getSuggestions = (userId) => request(`/api/users/suggestions?userId=${userId}`)
+export const getHealth = () => request('/api/health')
