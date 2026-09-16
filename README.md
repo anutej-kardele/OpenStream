@@ -1,6 +1,6 @@
 # OpenStream
 
-Frontend for **OpenStream**, a public microblogging platform. A React single-page app built with Vite, styled with Tailwind, and deployed to GitHub Pages.
+Frontend for **OpenStream**, a public microblogging platform. A React single-page app built with Vite, styled with Tailwind, connected to the live Spring Boot API, and deployed to GitHub Pages.
 
 **Live:** https://anutej-kardele.github.io/OpenStream/
 **Backend repo:** [anutej-kardele/openstream-api](https://github.com/anutej-kardele/openstream-api)
@@ -28,7 +28,7 @@ A mobile-first client for reading and writing short posts. Four screens — sign
 
 **`h-dvh` over `h-screen`.** The dynamic viewport unit tracks mobile browser chrome as it slides away, avoiding the dead strip at the bottom of the page that `vh` leaves behind on iOS Safari. Safe-area padding on the bottom nav keeps it clear of the home indicator.
 
-**State lives in context, not in screens.** Posts and the follow graph sit in a `DataContext` so that publishing a post on the feed is visible on the profile, and following someone persists across navigation. Auth is a separate `AuthContext` with a `RequireAuth` wrapper guarding the three authenticated routes.
+**API-backed state lives in context, not in screens.** `DataContext` centralizes calls to the OpenStream REST API and keeps posts, profiles, and follow relationships synchronized across the app. Auth is a separate `AuthContext` with a `RequireAuth` wrapper guarding the three authenticated routes.
 
 **SPA routing on a static host.** GitHub Pages has no server-side rewrite, so a hard refresh on `/OpenStream/profile` would 404. The build copies `index.html` to `404.html`, which Pages serves for unmatched paths, letting the router take over client-side.
 
@@ -81,7 +81,7 @@ Pushing to `main` triggers a GitHub Actions workflow that builds the app and pub
 
 ## Notes and next steps
 
-- **Currently running on mock data.** `dummyData.json` stands in for the API while the two halves are wired together. The backend is live and the contract is settled; the fetch layer is the next piece.
+- **Connected to the live API.** The frontend now reads and writes application data through the OpenStream Spring Boot REST API instead of `dummyData.json`, so posts, profiles, search results, and follow relationships are backed by PostgreSQL.
 - **Auth is a placeholder.** `AuthContext` accepts any non-empty credentials and holds session state in memory, so a refresh signs you out. Real JWT handling arrives with authentication on the API side.
 - **The API sleeps.** Render's free tier spins down after inactivity, so the first request can take up to a minute. Skeleton loaders and generous timeouts are built in rather than bolted on later.
 - **Likes are stubbed.** The tab exists on the profile; the relation doesn't yet exist in the schema.
