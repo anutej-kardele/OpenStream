@@ -52,8 +52,13 @@ export function DataProvider({ children }) {
     }, [user])
 
     const addPost = async (content) => {
-        const created = await createPost(user.id, content)
-        setPosts((prev) => [created, ...prev])
+        const result = await createPost(user.id, content)
+
+        if (result.post) {
+            setPosts((prev) => [result.post, ...prev])
+        }
+
+        return result
     }
 
     const toggleFollow = async (targetId) => {

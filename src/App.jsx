@@ -13,11 +13,12 @@ import FollowList from './pages/FollowList'
 
 export default function App() {
 
-  // Preload the backend server to avoid high loading time on first request
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/health`).catch(() => { })
+    Promise.allSettled([
+      fetch(`${import.meta.env.VITE_API_URL}/api/health`),
+      fetch(`${import.meta.env.VITE_MODERATION_API_URL}/health`)
+    ])
   }, [])
-
 
   return (
     <AuthProvider>
