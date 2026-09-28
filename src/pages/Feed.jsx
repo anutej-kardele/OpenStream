@@ -2,8 +2,13 @@ import { useState } from 'react'
 import PostCard from '../components/PostCard'
 import BottomNav from '../components/BottomNav'
 import { useData } from '../context/DataContext'
+import { useAuth } from '../context/AuthContext'
+import Avatar from '../components/Avatar'
 
 export default function Feed() {
+
+    const { user } = useAuth()
+
     const [draft, setDraft] = useState('')
     const [posting, setPosting] = useState(false)
     const [postStatus, setPostStatus] = useState(null)
@@ -63,7 +68,10 @@ export default function Feed() {
             </header>
 
             <div className="flex gap-3 px-4 py-3 border-b border-zinc-800">
-                <div className="w-10 h-10 rounded-full bg-zinc-800 shrink-0" />
+                <Avatar
+                    username={user.username}
+                    handle={user.handle}
+                />
 
                 <div className="flex-1">
                     <textarea

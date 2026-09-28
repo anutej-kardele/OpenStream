@@ -5,6 +5,7 @@ import { useData } from '../context/DataContext'
 import { getFollowCounts } from '../api'
 import PostCard from '../components/PostCard'
 import BottomNav from '../components/BottomNav'
+import Avatar from '../components/Avatar'
 
 export default function Profile() {
     const { user, logout } = useAuth()
@@ -35,7 +36,11 @@ export default function Profile() {
         <>
             <div className="px-4 pt-5 pb-3 border-b border-zinc-800">
                 <div className="flex items-center gap-3 mb-3">
-                    <div className="w-14 h-14 rounded-full bg-zinc-800 shrink-0" />
+                    <Avatar
+                        username={user.username}
+                        handle={user.handle}
+                        size="lg"
+                    />
                     <div className="flex-1 min-w-0">
                         <p className="font-medium text-white truncate">{user.username}</p>
                         <p className="text-xs text-zinc-500 truncate">@{user.handle}</p>
